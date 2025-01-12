@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ToBeNamedApplication {
+public class TaskFlow {
 
     public static void main(String[] args) {
-        SpringApplication.run(ToBeNamedApplication.class, args);
+        SpringApplication.run(TaskFlow.class, args);
     }
 
 }
