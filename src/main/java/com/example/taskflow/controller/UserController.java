@@ -2,6 +2,8 @@ package com.example.taskflow.controller;
 
 import com.example.taskflow.model.dto.UserLoginRequest;
 import com.example.taskflow.model.dto.UserRegisterRequest;
+import com.example.taskflow.model.dto.UserResponse;
+import com.example.taskflow.model.dto.UserUpdateRequest;
 import com.example.taskflow.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +37,13 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<Void> getProfile() {
-        userService.getProfile();
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserResponse> getProfile() {
+        return ResponseEntity.ok(userService.getProfile());
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<Void> updateProfile() {
-        userService.updateProfile();
+    public ResponseEntity<Void> updateProfile(@RequestBody UserUpdateRequest userUpdateRequest) {
+        userService.updateProfile(userUpdateRequest);
         return ResponseEntity.ok().build();
     }
 
