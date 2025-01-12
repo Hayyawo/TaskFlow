@@ -1,4 +1,4 @@
-package com.example.tobenamed.model;
+package com.example.taskflow.model;
 
 import org.springframework.validation.annotation.Validated;
 
