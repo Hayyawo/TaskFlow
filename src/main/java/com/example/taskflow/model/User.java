@@ -1,12 +1,14 @@
 package com.example.taskflow.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import org.springframework.validation.annotation.Validated;
 
-@Entity
-@Validated
+@Entity(name = "users")
 public class User {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
     private String username;
