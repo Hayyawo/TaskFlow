@@ -10,5 +10,4 @@ class ToBeNamedApplicationTests {
     void contextLoads() {
 
     }
-//ndsajk
 }
