@@ -5,6 +5,10 @@ import com.example.taskflow.model.dto.UserRegisterRequest;
 
 public class UserMapper {
     public static User map(UserRegisterRequest userRequest) {
-        return null;
+        return User.builder()
+                .email(userRequest.email())
+                .password(userRequest.password())
+                .email(userRequest.email())
+                .build();
     }
 }
