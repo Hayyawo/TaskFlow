@@ -1,5 +1,6 @@
 package com.example.taskflow.service;
 
+//import com.example.taskflow.config.JwtUtil;
 import com.example.taskflow.mapper.UserMapper;
 import com.example.taskflow.model.User;
 import com.example.taskflow.model.dto.UserLoginRequest;
@@ -17,12 +18,17 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    //    private final PasswordEncoder passwordEncoder;
+//    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository
+//                       PasswordEncoder passwordEncoder,
+//                       JwtUtil jwtUtil
+    ) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+//        this.passwordEncoder = passwordEncoder;
+//        this.jwtUtil = jwtUtil;
     }
 
     public void register(UserRegisterRequest userRequest) {
@@ -34,13 +40,14 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void login(UserLoginRequest userLoginRequest) {
-        Optional<User> userOpt = userRepository.findByUsername(userLoginRequest.username());
-        if (userOpt.isEmpty() || !passwordEncoder.matches(userLoginRequest.password(), userOpt.get().getPassword())) {
-            throw new IllegalArgumentException("Invalid username or password");
-        }
+    public String login(UserLoginRequest userLoginRequest) {
+        Optional<User> user = userRepository.findByUsername(userLoginRequest.username());
+//        if (user.isEmpty() || !passwordEncoder.matches(userLoginRequest.password(), user.get().getPassword())) {
+//            throw new IllegalArgumentException("Invalid username or password");
+//        }
 
-        // Handle login logic, e.g., issue a JWT token (if needed)
+//        return jwtUtil.generateToken(user.get().getUsername());
+        return null;
     }
 
     public void logout() {

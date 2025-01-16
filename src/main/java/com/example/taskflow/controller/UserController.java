@@ -25,9 +25,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody UserLoginRequest userLoginRequest) {
-        userService.login(userLoginRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> login(@RequestBody UserLoginRequest userLoginRequest) {
+        String jwt = userService.login(userLoginRequest);
+        return ResponseEntity.ok(jwt);
     }
 
     @PostMapping("/logout")
