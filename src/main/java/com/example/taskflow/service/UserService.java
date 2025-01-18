@@ -1,6 +1,7 @@
 package com.example.taskflow.service;
 
-//import com.example.taskflow.config.JwtUtil;
+import com.example.taskflow.config.JwtUtil;
+
 import com.example.taskflow.mapper.UserMapper;
 import com.example.taskflow.model.User;
 import com.example.taskflow.model.dto.UserLoginRequest;
@@ -18,17 +19,17 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    //    private final PasswordEncoder passwordEncoder;
-//    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserService(UserRepository userRepository
-//                       PasswordEncoder passwordEncoder,
-//                       JwtUtil jwtUtil
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtUtil jwtUtil
     ) {
         this.userRepository = userRepository;
-//        this.passwordEncoder = passwordEncoder;
-//        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
     public void register(UserRegisterRequest userRequest) {
@@ -42,12 +43,11 @@ public class UserService {
 
     public String login(UserLoginRequest userLoginRequest) {
         Optional<User> user = userRepository.findByUsername(userLoginRequest.username());
-//        if (user.isEmpty() || !passwordEncoder.matches(userLoginRequest.password(), user.get().getPassword())) {
-//            throw new IllegalArgumentException("Invalid username or password");
-//        }
+        if (user.isEmpty() || !passwordEncoder.matches(userLoginRequest.password(), user.get().getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password");
+        }
 
-//        return jwtUtil.generateToken(user.get().getUsername());
-        return null;
+        return jwtUtil.generateToken(user.get().getUsername());
     }
 
     public void logout() {
