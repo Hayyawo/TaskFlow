@@ -19,9 +19,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody UserRegisterRequest userRequest) {
-        userService.register(userRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> register(@RequestBody UserRegisterRequest userRequest) {
+        String jwt = userService.register(userRequest);
+        return ResponseEntity.ok(jwt);
     }
 
     @PostMapping("/login")

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -32,18 +33,20 @@ public class UserService {
         this.jwtUtil = jwtUtil;
     }
 
-    public void register(UserRegisterRequest userRequest) {
+    public String register(UserRegisterRequest userRequest) {
         if (userRepository.findByUsername(userRequest.username()).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
 
         User user = UserMapper.map(userRequest);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        return jwtUtil.generateToken(user.getUsername());
     }
 
     public String login(UserLoginRequest userLoginRequest) {
         Optional<User> user = userRepository.findByUsername(userLoginRequest.username());
-        if (user.isEmpty() || !passwordEncoder.matches(userLoginRequest.password(), user.get().getPassword())) {
+        if (user.isEmpty() || !((Objects.equals(userLoginRequest.password(), user.get().getPassword())))) {
             throw new IllegalArgumentException("Invalid username or password");
         }
 
