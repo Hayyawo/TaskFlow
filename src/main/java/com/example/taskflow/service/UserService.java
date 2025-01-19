@@ -9,6 +9,7 @@ import com.example.taskflow.model.dto.UserRegisterRequest;
 import com.example.taskflow.model.dto.UserResponse;
 import com.example.taskflow.model.dto.UserUpdateRequest;
 import com.example.taskflow.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,13 +54,11 @@ public class UserService {
         return jwtUtil.generateToken(user.get().getUsername());
     }
 
-    public void logout() {
-        // Handle logout logic (if session-based authentication is used)
+    public void logout(HttpServletRequest request) {
+        request.getSession().invalidate();
     }
 
     public UserResponse getProfile() {
-        // Fetch and return the currently logged-in user's profile
-//        return new UserResponse(/* populate with user data */);
         return null;
     }
 

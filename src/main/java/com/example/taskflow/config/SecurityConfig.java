@@ -28,7 +28,7 @@ public class SecurityConfig{
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login")
+                        .requestMatchers("/api/users/login", "/api/users/register")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
