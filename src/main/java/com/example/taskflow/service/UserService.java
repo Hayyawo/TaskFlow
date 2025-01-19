@@ -1,5 +1,7 @@
 package com.example.taskflow.service;
 
+import com.example.taskflow.config.JwtUtil;
+
 import com.example.taskflow.mapper.UserMapper;
 import com.example.taskflow.model.User;
 import com.example.taskflow.model.dto.UserLoginRequest;
@@ -7,49 +9,56 @@ import com.example.taskflow.model.dto.UserRegisterRequest;
 import com.example.taskflow.model.dto.UserResponse;
 import com.example.taskflow.model.dto.UserUpdateRequest;
 import com.example.taskflow.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtUtil jwtUtil
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
     }
 
-    public void register(UserRegisterRequest userRequest) {
+    public String register(UserRegisterRequest userRequest) {
         if (userRepository.findByUsername(userRequest.username()).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
 
         User user = UserMapper.map(userRequest);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        return jwtUtil.generateToken(user.getUsername());
     }
 
-    public void login(UserLoginRequest userLoginRequest) {
-        Optional<User> userOpt = userRepository.findByUsername(userLoginRequest.username());
-        if (userOpt.isEmpty() || !passwordEncoder.matches(userLoginRequest.password(), userOpt.get().getPassword())) {
+    public String login(UserLoginRequest userLoginRequest) {
+        Optional<User> user = userRepository.findByUsername(userLoginRequest.username());
+        if (user.isEmpty() || !((Objects.equals(userLoginRequest.password(), user.get().getPassword())))) {
             throw new IllegalArgumentException("Invalid username or password");
         }
 
-        // Handle login logic, e.g., issue a JWT token (if needed)
+        return jwtUtil.generateToken(user.get().getUsername());
     }
 
-    public void logout() {
-        // Handle logout logic (if session-based authentication is used)
+    public void logout(HttpServletRequest request) {
+        request.getSession().invalidate();
     }
 
     public UserResponse getProfile() {
-        // Fetch and return the currently logged-in user's profile
-//        return new UserResponse(/* populate with user data */);
         return null;
     }
 

@@ -5,11 +5,14 @@ import com.example.taskflow.model.dto.UserRegisterRequest;
 import com.example.taskflow.model.dto.UserResponse;
 import com.example.taskflow.model.dto.UserUpdateRequest;
 import com.example.taskflow.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -19,25 +22,25 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody UserRegisterRequest userRequest) {
-        userService.register(userRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> register(@RequestBody UserRegisterRequest userRequest) {
+        String jwt = userService.register(userRequest);
+        return ResponseEntity.ok(jwt);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody UserLoginRequest userLoginRequest) {
-        userService.login(userLoginRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> login(@RequestBody UserLoginRequest userLoginRequest) {
+        String jwt = userService.login(userLoginRequest);
+        return ResponseEntity.ok(jwt);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        userService.logout();
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        userService.logout(request);
+        return ResponseEntity.ok("Logged out");
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserResponse> getProfile() {
+    public ResponseEntity<UserResponse> getProfile(@AuthenticationPrincipal String username) {
         return ResponseEntity.ok(userService.getProfile());
     }
 
