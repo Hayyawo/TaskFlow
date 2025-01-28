@@ -15,7 +15,6 @@ import java.util.Objects;
 @Getter
 @Validated
 @Entity(name = "APP_USER")
-@RequiredArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +22,9 @@ public class User {
     private String username;
     private String password;
     private String email;
+
+    public User() {
+    }
 
     public User(String username, String email) {
         this.username = username;

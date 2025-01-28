@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
-        if (path.equals("/api/users/login") || path.equals("/api/users/register")) {
+        if (path.equals("/api/users/login") || path.equals("/api/users/register") || path.startsWith("/h2-console")) {
             filterChain.doFilter(request, response);
             return;
         }
