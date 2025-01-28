@@ -41,7 +41,8 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<UserResponse> getProfile(@AuthenticationPrincipal String username) {
-        return ResponseEntity.ok(userService.getProfile());
+        UserResponse userResponse = userService.getProfile(username);
+        return ResponseEntity.ok(userResponse);
     }
 
     @PutMapping("/profile")
@@ -51,8 +52,8 @@ public class UserController {
     }
 
     @DeleteMapping("/profile")
-    public ResponseEntity<Void> deleteProfile() {
-        userService.deleteProfile();
+    public ResponseEntity<Void> deleteProfile(@RequestBody String username) {
+        userService.deleteProfile(username);
         return ResponseEntity.ok().build();
     }
 }

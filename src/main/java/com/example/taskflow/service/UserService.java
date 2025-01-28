@@ -58,15 +58,15 @@ public class UserService {
         request.getSession().invalidate();
     }
 
-    public UserResponse getProfile() {
-        return null;
+    public UserResponse getProfile(String username) {
+        return UserMapper.map(userRepository.findByUsername(username).orElseThrow());
     }
 
     public void updateProfile(UserUpdateRequest userUpdateRequest) {
-        // Update the current user's profile
+        userRepository.save(UserMapper.map(userUpdateRequest));
     }
 
-    public void deleteProfile() {
-        // Delete the current user's profile
+    public void deleteProfile(String username) {
+        userRepository.deleteUserByUsername(username);
     }
 }
