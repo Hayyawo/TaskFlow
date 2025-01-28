@@ -42,7 +42,7 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<UserResponse> getProfile(@AuthenticationPrincipal String username) {
         UserResponse userResponse = userService.getProfile(username);
-        return ResponseEntity.ok(userService.getProfile());
+        return ResponseEntity.ok(userResponse);
     }
 
     @PutMapping("/profile")
